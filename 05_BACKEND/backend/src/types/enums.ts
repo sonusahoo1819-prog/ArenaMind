@@ -1,0 +1,25 @@
+export enum Role {
+  FAN = 'FAN',
+  VOLUNTEER = 'VOLUNTEER',
+  OPERATIONS = 'OPERATIONS',
+  SECURITY = 'SECURITY',
+  MEDICAL = 'MEDICAL',
+  TRANSPORT = 'TRANSPORT',
+  ADMIN = 'ADMIN',
+}
+
+export enum IncidentStatus {
+  REPORTED = 'REPORTED',
+  DISPATCHED = 'DISPATCHED',
+  RESOLVED = 'RESOLVED',
+  CANCELLED = 'CANCELLED',
+}
+
+export enum IncidentType {
+  MEDICAL = 'MEDICAL',
+  SECURITY = 'SECURITY',
+  SOS = 'SOS',
+  MAINTENANCE = 'MAINTENANCE',
+  CROWD = 'CROWD',
+  OTHER = 'OTHER',
+}
