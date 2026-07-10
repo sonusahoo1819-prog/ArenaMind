@@ -6,10 +6,17 @@ import { useAuthStore } from '../auth/authStore';
 import { ShieldAlert, AlertTriangle, UserCheck, CheckCircle2, Navigation, Loader2, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export const IncidentPanel: React.FC = () => {
+interface IncidentPanelProps {
+  simMode?: 'NORMAL' | 'HALFTIME' | 'EXIT' | 'EMERGENCY';
+  setSimMode?: (mode: 'NORMAL' | 'HALFTIME' | 'EXIT' | 'EMERGENCY') => void;
+}
+
+export const IncidentPanel: React.FC<IncidentPanelProps> = ({ simMode = 'NORMAL', setSimMode }) => {
   const { token, user } = useAuthStore();
   const [incidents, setIncidents] = useState<Incident[]>([]);
-  const [sosActive, setSosActive] = useState(false);
+  
+  const sosActive = simMode === 'EMERGENCY';
+  
   const [title, setTitle] = useState('');
   const [desc, setDesc] = useState('');
   const [type, setType] = useState('SECURITY');
@@ -40,13 +47,33 @@ export const IncidentPanel: React.FC = () => {
 
   const handleSOS = async () => {
     if (!token) return;
-    setSosActive(true);
-    try {
-      await securityService.triggerSOS({ zoneId: 'Current Zone', level: '1' }, token);
-      alert('⚠️ EMERGENCY SOS ACTIVE. Medical & Security dispatched to your seat.');
-      fetchIncidents();
-    } catch (err: any) {
-      alert('SOS Failed: ' + err.message);
+    
+    if (sosActive) {
+      // Toggle OFF
+      if (setSimMode) {
+        setSimMode('NORMAL');
+      }
+      try {
+        alert('Emergency SOS deactivated. Returning to normal status.');
+        fetchIncidents();
+      } catch (err: any) {
+        alert('Failed to deactivate: ' + err.message);
+      }
+    } else {
+      // Toggle ON
+      if (setSimMode) {
+        setSimMode('EMERGENCY');
+      }
+      try {
+        await securityService.triggerSOS({ zoneId: 'Current Zone', level: '1' }, token);
+        alert('⚠️ EMERGENCY SOS ACTIVE. Medical & Security dispatched to your seat.');
+        fetchIncidents();
+      } catch (err: any) {
+        alert('SOS Trigger Failed: ' + err.message);
+        if (setSimMode) {
+          setSimMode('NORMAL');
+        }
+      }
     }
   };
 
@@ -113,14 +140,13 @@ export const IncidentPanel: React.FC = () => {
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.96 }}
           onClick={handleSOS}
-          disabled={sosActive}
           className={`px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest transition-all cursor-pointer border shadow-[0_0_20px_rgba(255,23,68,0.2)] ${
             sosActive 
-              ? 'bg-[#00FF88]/15 border-[#00FF88]/30 text-[#00FF88]' 
+              ? 'bg-[#FF1744]/15 border-[#FF1744]/40 text-[#FF1744] hover:bg-[#FF1744]/25 shadow-[0_0_25px_rgba(255,23,68,0.35)]' 
               : 'bg-[#FF1744] hover:bg-[#FF1744]/90 border-[#FF1744]/40 text-white'
           }`}
         >
-          {sosActive ? 'DISPATCHED' : 'Activate SOS Panic'}
+          {sosActive ? 'Deactivate SOS' : 'Activate SOS Panic'}
         </motion.button>
       </div>
 

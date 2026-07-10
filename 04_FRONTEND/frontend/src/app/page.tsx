@@ -1344,7 +1344,7 @@ export default function Home() {
                       </div>
                       
                       <div className="pt-4 border-t border-zinc-800/40">
-                        <IncidentPanel />
+                        <IncidentPanel simMode={simMode} setSimMode={setSimMode} />
                       </div>
                     </div>
                   </div>
@@ -1562,7 +1562,7 @@ export default function Home() {
                   {activeDetailsTab === 'navigation' && <NavigationPanel />}
                   {activeDetailsTab === 'crowd' && <CrowdPanel />}
                   {activeDetailsTab === 'transport' && <TransportPanel />}
-                  {activeDetailsTab === 'incidents' && <IncidentPanel />}
+                  {activeDetailsTab === 'incidents' && <IncidentPanel simMode={simMode} setSimMode={setSimMode} />}
                 </div>
               </div>
 
