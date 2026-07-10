@@ -1583,7 +1583,7 @@ export default function Home() {
                   { label: 'Gate C', val: simMode === 'NORMAL' ? 40 : simMode === 'HALFTIME' ? 75 : simMode === 'EXIT' ? 60 : 12 },
                   { label: 'Gate D', val: simMode === 'NORMAL' ? 65 : simMode === 'HALFTIME' ? 95 : simMode === 'EXIT' ? 85 : 8 },
                 ].map((bar, idx) => (
-                  <div key={idx} className="flex flex-col items-center">
+                  <div key={idx} className="flex flex-col items-center h-full justify-end">
                     <div
                       className="w-10 rounded-t-lg bg-gradient-to-t from-[#0057FF] to-[#00E5FF] transition-all duration-500 shadow-[0_0_10px_rgba(0,229,255,0.3)]"
                       style={{ height: `${bar.val}%` }}
