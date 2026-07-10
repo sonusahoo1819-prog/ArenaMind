@@ -13,6 +13,12 @@ import { HologramStadium } from '../components/HologramStadium';
 import { HologramFootball } from '../components/HologramFootball';
 import { CustomCursor } from '../components/CustomCursor';
 import {
+  WorkspaceHeader,
+  SimulationControl,
+  TelemetryStats,
+  DetailedTabs
+} from '../features/dashboard/components';
+import {
   Sparkles,
   User,
   ShieldAlert,
@@ -884,152 +890,21 @@ export default function Home() {
       {/* Physics Cursor Follower */}
       <CustomCursor />
 
-      {/* Top Floating Glass Navigation Bar */}
-      <header className={`border-b backdrop-blur-md p-4 sticky top-0 z-50 shadow-2xl transition-colors duration-300 ${
-        theme === 'dark' ? 'border-zinc-800/40 bg-[#081A33]/75 text-white' : 'border-gray-200 bg-white/80 text-zinc-850'
-      }`}>
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          
-          <div className="flex items-center space-x-3">
-            {/* Back to portal button */}
-            <button
-              onClick={() => setWorkspaceActive(false)}
-              data-magnetic
-              title="Return to Portal"
-              className={`p-2 rounded-lg border transition-all cursor-pointer ${
-                theme === 'dark' ? 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white' : 'bg-white border-gray-200 text-zinc-650 hover:text-zinc-900'
-              }`}
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-
-            <div className="flex items-center space-x-2">
-              <div className="p-1.5 rounded-lg bg-[#0057FF]/10 border border-[#0057FF]/30 flex items-center justify-center">
-                <Compass className="w-4 h-4 text-[#00E5FF]" />
-              </div>
-              <div>
-                <span className={`text-xs font-black tracking-wider uppercase block ${theme === 'dark' ? 'text-white' : 'text-zinc-900'}`}>ArenaMind Stadium OS</span>
-                <span className="text-[8px] text-[#00E5FF] uppercase font-bold tracking-wider leading-none">Command Center</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Match Info */}
-          <div className={`hidden lg:flex items-center space-x-4 border px-4 py-1.5 rounded-full text-xs font-semibold ${
-            theme === 'dark' ? 'bg-zinc-950/60 border-zinc-800/60 text-zinc-400' : 'bg-gray-50 border-gray-200 text-zinc-650'
-          }`}>
-            <span className="text-[#00FF88] animate-pulse">● LIVE</span>
-            <span>FIFA WORLD CUP MATCH</span>
-            <span className="text-zinc-600">|</span>
-            <span>Quarter-Finals: Matchday 22</span>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            {/* AI Assistant Toggle Button in Header */}
-            <button
-              onClick={() => setAssistantOpen(!assistantOpen)}
-              data-magnetic
-              title="Toggle AI Co-pilot"
-              className={`p-2.5 rounded-xl border transition-all cursor-pointer flex items-center space-x-1.5 ${
-                assistantOpen
-                  ? 'bg-gradient-to-r from-[#0057FF] to-[#00E5FF] text-white border-[#0057FF]/40 shadow-[0_0_15px_rgba(0,87,255,0.4)]'
-                  : theme === 'dark'
-                    ? 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'
-                    : 'bg-white border-gray-200 text-zinc-650 hover:text-zinc-900'
-              }`}
-            >
-              <Sparkles className="w-4 h-4" />
-              <span className="text-[10px] font-extrabold uppercase tracking-wider hidden sm:inline">AI Co-pilot</span>
-            </button>
-
-            {/* Theme Toggle */}
-            <button
-              onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
-              data-magnetic
-              title={theme === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode"}
-              className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
-                theme === 'dark' ? 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white' : 'bg-white border-gray-200 text-zinc-600 hover:text-zinc-900'
-              }`}
-            >
-              {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-
-            {/* Notification Center */}
-            <div className="relative">
-              <button
-                onClick={() => setNotificationsOpen(!notificationsOpen)}
-                data-magnetic
-                aria-label="View alerts"
-                className={`p-2.5 rounded-xl border transition-all cursor-pointer relative ${
-                  theme === 'dark' ? 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white' : 'bg-white border-gray-200 text-zinc-655 hover:text-zinc-900'
-                }`}
-              >
-                <Bell className="w-4 h-4" />
-                {metrics.warnings > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[#FF1744] text-white text-[8px] font-extrabold flex items-center justify-center animate-pulse">
-                    {metrics.warnings}
-                  </span>
-                )}
-              </button>
-
-              <AnimatePresence>
-                {notificationsOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className={`absolute right-0 mt-3 w-80 border rounded-2xl shadow-2xl overflow-hidden z-50 ${
-                      theme === 'dark' ? 'bg-[#081A33]/90 border-zinc-800 text-white' : 'bg-white border-gray-200 text-zinc-850'
-                    }`}
-                  >
-                    <div className="p-3 bg-zinc-950/20 border-b border-zinc-800/20 flex justify-between items-center">
-                      <span className="text-xs font-extrabold">System Threat Alerts</span>
-                      <span className="text-[8px] bg-[#FF1744]/15 text-[#FF1744] border border-[#FF1744]/30 px-2 py-0.5 rounded-full font-bold uppercase">
-                        {metrics.warnings} Alerts
-                      </span>
-                    </div>
-                    <div className="p-3 space-y-2 max-h-60 overflow-y-auto">
-                      {metrics.alerts.map((alert, idx) => (
-                        <div key={idx} className="p-2.5 rounded-xl bg-zinc-950/10 border border-zinc-800/10 text-xs leading-normal flex items-start space-x-2">
-                          <AlertTriangle className="w-3.5 h-3.5 text-[#FFB000] flex-shrink-0 mt-0.5" />
-                          <span>{alert}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Profile */}
-            <div className={`flex items-center space-x-2 border px-3 py-1.5 rounded-xl ${
-              theme === 'dark' ? 'bg-zinc-900 border-zinc-800' : 'bg-white border-gray-200'
-            }`}>
-              <div className="w-6 h-6 rounded-full bg-[#0057FF] flex items-center justify-center text-[10px] font-bold text-white uppercase shadow-[0_0_10px_rgba(0,87,255,0.4)]">
-                {user?.name?.[0] || 'U'}
-              </div>
-              <div className="hidden sm:block text-left">
-                <p className="text-[11px] font-bold leading-none">{user?.name || 'User'}</p>
-                <p className="text-[8px] text-zinc-500 uppercase font-semibold leading-none mt-1">{user?.role || 'FAN'}</p>
-              </div>
-            </div>
-
-            {/* Logout */}
-            <button
-              onClick={() => {
-                logout();
-                setWorkspaceActive(false);
-              }}
-              data-magnetic
-              className={`p-2.5 rounded-xl border transition-colors cursor-pointer ${
-                theme === 'dark' ? 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white' : 'bg-white border-gray-200 text-zinc-650 hover:text-zinc-900'
-              }`}
-            >
-              <LogOut className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </header>
+      {/* Top Floating Glass Navigation Bar & Role Selector */}
+      <WorkspaceHeader
+        theme={theme}
+        setTheme={setTheme}
+        setWorkspaceActive={setWorkspaceActive}
+        selectedRole={selectedRole}
+        setSelectedRole={setSelectedRole}
+        assistantOpen={assistantOpen}
+        setAssistantOpen={setAssistantOpen}
+        notificationsOpen={notificationsOpen}
+        setNotificationsOpen={setNotificationsOpen}
+        user={user}
+        logout={logout}
+        metrics={metrics}
+      />
 
       {/* Main Workspace Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6 relative z-10">
@@ -1037,64 +912,12 @@ export default function Home() {
         {/* Global Accessibility Bar */}
         <AccessibilityPanel />
 
-        {/* Role Selector Switched Panels */}
-        <div className={`flex flex-wrap items-center gap-2 p-1.5 border rounded-2xl transition-colors duration-300 ${
-          theme === 'dark' ? 'bg-[#081A33]/70 border-zinc-800/40' : 'bg-white border-gray-200 shadow-sm'
-        }`}>
-          {(['ORGANIZER', 'SECURITY', 'MEDICAL', 'VOLUNTEER', 'ACCESSIBILITY', 'SUSTAINABILITY'] as RoleType[]).map((role) => (
-            <button
-              key={role}
-              onClick={() => setSelectedRole(role)}
-              data-magnetic
-              className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
-                selectedRole === role
-                  ? 'bg-gradient-to-r from-[#0057FF] to-[#00E5FF] text-white shadow-[0_0_15px_rgba(0,87,255,0.4)]'
-                  : theme === 'dark'
-                    ? 'text-zinc-400 hover:text-white hover:bg-zinc-900/40'
-                    : 'text-zinc-655 hover:text-zinc-900 hover:bg-gray-150'
-              }`}
-            >
-              {role === 'SECURITY' ? 'Security Personnel' : role === 'MEDICAL' ? 'Medical Team' : role === 'VOLUNTEER' ? 'Volunteer Console' : role.toLowerCase()}
-            </button>
-          ))}
-        </div>
-
         {/* Live Simulation Control panel */}
-        <div className={`p-4 border rounded-2xl flex flex-wrap items-center justify-between gap-4 shadow-xl transition-colors duration-300 ${
-          theme === 'dark' ? 'bg-gradient-to-r from-[#0057FF]/5 to-transparent border-zinc-800/40' : 'bg-white border-gray-200'
-        }`}>
-          <div className="flex items-center space-x-3">
-            <div className="p-2 rounded-lg bg-[#0057FF]/10">
-              <Play className="w-4.5 h-4.5 text-[#00E5FF] animate-pulse" />
-            </div>
-            <div>
-              <h3 className="text-xs font-bold tracking-wide">Stadium Operations Simulation</h3>
-              <p className="text-[10px] text-zinc-500">Inject event loads, crowd congestion, and emergency alarm states</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2">
-            {(['NORMAL', 'HALFTIME', 'EXIT', 'EMERGENCY'] as SimMode[]).map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setSimMode(mode)}
-                data-magnetic
-                className={`px-3.5 py-2 rounded-xl text-[10px] font-extrabold uppercase tracking-wider transition-all cursor-pointer flex items-center space-x-1.5 ${
-                  simMode === mode
-                    ? mode === 'EMERGENCY'
-                      ? 'bg-[#FF1744] text-white shadow-[0_0_15px_rgba(255,23,68,0.4)]'
-                      : 'bg-[#0057FF] text-white shadow-[0_0_15px_rgba(0,87,255,0.4)]'
-                    : theme === 'dark'
-                      ? 'bg-zinc-900/60 border border-zinc-800/40 text-zinc-400 hover:text-white'
-                      : 'bg-[#0057FF] text-white'
-                }`}
-              >
-                {mode === 'EMERGENCY' && <AlertTriangle className="w-3.5 h-3.5 text-white" />}
-                <span>{mode}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+        <SimulationControl
+          simMode={simMode}
+          setSimMode={setSimMode}
+          theme={theme}
+        />
 
         {/* Sub Navigation tabs */}
         <div className="flex border-b border-zinc-800/60">
@@ -1126,24 +949,10 @@ export default function Home() {
               {/* Organizer Role View */}
               {selectedRole === 'ORGANIZER' && (
                 <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div className={`p-5 border rounded-2xl shadow-xl ${theme === 'dark' ? 'bg-[#081A33]/70 border-zinc-800/40' : 'bg-white border-gray-200 shadow-sm'}`}>
-                      <span className="text-[8px] text-zinc-500 uppercase font-bold block">Match Status</span>
-                      <span className="text-lg font-black block mt-1">2nd Half // 72'</span>
-                    </div>
-                    <div className={`p-5 border rounded-2xl shadow-xl ${theme === 'dark' ? 'bg-[#081A33]/70 border-zinc-800/40' : 'bg-white border-gray-200 shadow-sm'}`}>
-                      <span className="text-[8px] text-zinc-500 uppercase font-bold block">Volunteers Active</span>
-                      <span className="text-lg font-black block mt-1">142 / 150</span>
-                    </div>
-                    <div className={`p-5 border rounded-2xl shadow-xl ${theme === 'dark' ? 'bg-[#081A33]/70 border-zinc-800/40' : 'bg-white border-gray-200 shadow-sm'}`}>
-                      <span className="text-[8px] text-zinc-500 uppercase font-bold block">Gate Readiness</span>
-                      <span className="text-lg font-black text-[#00FF88] block mt-1">100% OPERATIONAL</span>
-                    </div>
-                    <div className={`p-5 border rounded-2xl shadow-xl ${theme === 'dark' ? 'bg-[#081A33]/70 border-zinc-800/40' : 'bg-white border-gray-200 shadow-sm'}`}>
-                      <span className="text-[8px] text-zinc-500 uppercase font-bold block">Stadium Capacity Fill</span>
-                      <span className="text-lg font-black block mt-1 tabular-nums">{metrics.occupancyPercent}%</span>
-                    </div>
-                  </div>
+                  <TelemetryStats
+                    occupancyPercent={metrics.occupancyPercent}
+                    theme={theme}
+                  />
 
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className={`lg:col-span-2 p-6 border rounded-2xl shadow-xl ${theme === 'dark' ? 'bg-[#081A33]/70 border-zinc-800/40' : 'bg-white border-gray-200'}`}>
@@ -1535,35 +1344,12 @@ export default function Home() {
               {/* Bottom detail panels */}
               <div className="space-y-4 pt-4">
                 <h4 className="text-xs font-extrabold uppercase tracking-widest text-zinc-500">Operational sub consoles</h4>
-                <div className="flex border-b border-zinc-800/60 overflow-x-auto">
-                  {[
-                    { id: 'navigation', label: 'Navigation Routing Map', icon: Compass },
-                    { id: 'crowd', label: 'Crowd Flow Forecast', icon: Users },
-                    { id: 'transport', label: 'Transit & Shuttle Control', icon: Truck },
-                    { id: 'incidents', label: 'SOS Emergency & Incidents', icon: ShieldAlert }
-                  ].map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setActiveDetailsTab(tab.id as any)}
-                      data-magnetic
-                      className={`flex items-center space-x-2 px-5 py-3 text-xs font-bold border-b-2 transition-all cursor-pointer whitespace-nowrap ${
-                        activeDetailsTab === tab.id
-                          ? 'border-[#0057FF] text-[#0057FF]'
-                          : 'border-transparent text-zinc-500 hover:text-white'
-                      }`}
-                    >
-                      <tab.icon className="w-4 h-4" />
-                      <span>{tab.label}</span>
-                    </button>
-                  ))}
-                </div>
-
-                <div className="p-2 border border-zinc-800/20 rounded-xl bg-zinc-950/10">
-                  {activeDetailsTab === 'navigation' && <NavigationPanel />}
-                  {activeDetailsTab === 'crowd' && <CrowdPanel />}
-                  {activeDetailsTab === 'transport' && <TransportPanel />}
-                  {activeDetailsTab === 'incidents' && <IncidentPanel simMode={simMode} setSimMode={setSimMode} />}
-                </div>
+                <DetailedTabs
+                  activeDetailsTab={activeDetailsTab}
+                  setActiveDetailsTab={setActiveDetailsTab}
+                  simMode={simMode}
+                  setSimMode={setSimMode}
+                />
               </div>
 
             </div>

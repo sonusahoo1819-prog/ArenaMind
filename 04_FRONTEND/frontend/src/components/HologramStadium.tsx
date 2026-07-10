@@ -24,7 +24,7 @@ interface Point3D {
   size?: number;
 }
 
-export const HologramStadium: React.FC<HologramStadiumProps> = ({
+export const HologramStadium: React.FC<HologramStadiumProps> = React.memo(({
   hoveredStand,
   onStandHover,
   theme,
@@ -705,4 +705,6 @@ export const HologramStadium: React.FC<HologramStadiumProps> = ({
       <canvas ref={canvasRef} className="w-full block select-none cursor-grab active:cursor-grabbing" />
     </div>
   );
-};
+});
+
+HologramStadium.displayName = 'HologramStadium';
