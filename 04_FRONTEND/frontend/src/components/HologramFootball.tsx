@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react';
 
-export const HologramFootball: React.FC = () => {
+export const HologramFootball: React.FC = React.memo(() => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotation = useRef({ x: 0, y: 0 });
   const targetRotation = useRef({ x: 0, y: 0 });
@@ -220,4 +220,6 @@ export const HologramFootball: React.FC = () => {
       <div className="absolute inset-0 bg-gradient-to-t from-[#05070D] via-transparent to-[#05070D] pointer-events-none z-20" />
     </div>
   );
-};
+});
+
+HologramFootball.displayName = 'HologramFootball';

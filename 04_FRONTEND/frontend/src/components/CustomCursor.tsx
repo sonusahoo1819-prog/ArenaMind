@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 
-export const CustomCursor: React.FC = () => {
+export const CustomCursor: React.FC = React.memo(() => {
   const cursorRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number | null>(null);
@@ -127,4 +127,6 @@ export const CustomCursor: React.FC = () => {
       />
     </div>
   );
-};
+});
+
+CustomCursor.displayName = 'CustomCursor';
